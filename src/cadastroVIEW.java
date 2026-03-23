@@ -140,16 +140,27 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCadNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ProdutosDTO produto = new ProdutosDTO();
-        String nome = txtCadNome.getText(); 
-        String valor = txtCadValor.getText();
-        String status = "A Venda";
-        produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
-        
-        ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
+                                           
+    ProdutosDTO produto = new ProdutosDTO();
+    String nome = txtCadNome.getText(); 
+    String valor = txtCadValor.getText();
+    String status = "A Venda";
+    
+    // Seta os dados no DTO
+    produto.setNome(nome);
+    produto.setValor(Integer.parseInt(valor));
+    produto.setStatus(status);
+    
+    // Chama o DAO para salvar
+    ProdutosDAO produtodao = new ProdutosDAO();
+    produtodao.cadastrarProduto(produto);
+    
+    // --- ADICIONE ISSO AQUI ---
+    // Limpa os campos após o cadastro
+    txtCadNome.setText("");
+    txtCadValor.setText("");
+    txtCadNome.requestFocus(); // Volta o cursor para o campo nome
+
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
