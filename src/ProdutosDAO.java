@@ -11,7 +11,7 @@ public class ProdutosDAO {
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
-    // MÉTODO PARA CADASTRAR
+    
     public void cadastrarProduto(ProdutosDTO produto) {
         conn = new conectaDAO().connectDB();
         String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
@@ -28,11 +28,11 @@ public class ProdutosDAO {
         }
     }
 
-    // MÉTODO PARA LISTAR (Apenas um!)
+ 
     public ArrayList<ProdutosDTO> listarProdutos() {
         String sql = "SELECT * FROM produtos";
         conn = new conectaDAO().connectDB();
-        listagem.clear(); // Limpa a lista antes de preencher para não duplicar
+        listagem.clear(); 
         
         try {
             prep = conn.prepareStatement(sql);
@@ -51,6 +51,42 @@ public class ProdutosDAO {
         }
         return listagem;
     }
-    
- 
-}
+
+  
+    public void venderProduto(int id) {
+        conn = new conectaDAO().connectDB();
+        String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
+        
+        try {
+            prep = conn.prepareStatement(sql);
+            prep.setInt(1, id);
+            prep.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Status do produto atualizado para 'Vendido'!");
+        } catch (Exception e) {
+            System.out.println("Erro ao vender produto: " + e.getMessage());
+        }
+    }
+
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+        String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
+        conn = new conectaDAO().connectDB();
+        ArrayList<ProdutosDTO> listaVendidos = new ArrayList<>();
+        
+        try {
+            prep = conn.prepareStatement(sql);
+            resultset = prep.executeQuery();
+            
+            while (resultset.next()) {
+                ProdutosDTO p = new ProdutosDTO();
+                p.setId(resultset.getInt("id"));
+                p.setNome(resultset.getString("nome"));
+                p.setValor(resultset.getInt("valor"));
+                p.setStatus(resultset.getString("status"));
+                listaVendidos.add(p);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar vendidos: " + e.getMessage());
+        }
+        return listaVendidos;
+    }
+} 
