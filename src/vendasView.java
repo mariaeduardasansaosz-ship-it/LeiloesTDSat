@@ -7,6 +7,9 @@
  *
  * @author maria
  */
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 public class vendasView extends javax.swing.JFrame {
 
     /**
@@ -14,6 +17,30 @@ public class vendasView extends javax.swing.JFrame {
      */
     public vendasView() {
         initComponents();
+        listarProdutosVendidos(); // Chama o método ao abrir
+    }
+
+    // Cole este método antes da última chave } do arquivo
+    private void listarProdutosVendidos() {
+        try {
+            ProdutosDAO produtosdao = new ProdutosDAO();
+            DefaultTableModel model = (DefaultTableModel) tabelaVendas.getModel();
+            model.setNumRows(0); 
+            
+            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutosVendidos();
+            
+            for (int i = 0; i < listagem.size(); i++) {
+                model.addRow(new Object[]{
+                    listagem.get(i).getId(),
+                    listagem.get(i).getNome(),
+                    listagem.get(i).getValor(),
+                    listagem.get(i).getStatus()
+                });
+            }
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    
     }
 
     /**
@@ -26,11 +53,11 @@ public class vendasView extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelaVendas = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaVendas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -38,10 +65,10 @@ public class vendasView extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Nome", "Valor", "Status"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabelaVendas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,6 +127,6 @@ public class vendasView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabelaVendas;
     // End of variables declaration//GEN-END:variables
 }
