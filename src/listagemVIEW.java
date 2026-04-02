@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -135,12 +136,21 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
+                                          
+    // Pegamos o ID apenas do campo de texto (JTextPane)
+    String idTexto = id_produto_venda.getText();
+
+    if (!idTexto.isEmpty()) {
+        ProdutosDAO proddao = new ProdutosDAO();
+        // Aqui enviamos o ID que você digitou para o banco
+        proddao.venderProduto(Integer.parseInt(idTexto));
         
-        ProdutosDAO produtosdao = new ProdutosDAO();
-        
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+        listarProdutos(); // Atualiza a tabela automaticamente
+        JOptionPane.showMessageDialog(null, "Venda realizada com sucesso!");
+    } else {
+        JOptionPane.showMessageDialog(null, "Informe o ID do produto no campo de texto!");
+    }
+
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
